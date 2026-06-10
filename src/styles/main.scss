@@ -1,0 +1,54 @@
+@use './variables' as *;
+
+// dark bookmaker-style palette (default)
+:root,
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-bg: #0d1117;
+  --color-surface: #161b22;
+  --color-surface-hover: #1c2330;
+  --color-border: #2d333b;
+  --color-text: #e6edf3;
+  --color-text-muted: #8b949e;
+  --color-accent: #2ea44f;
+  --color-accent-soft: rgba(46, 164, 79, 0.15);
+  --color-danger: #f85149;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --color-bg: #f6f8fa;
+  --color-surface: #ffffff;
+  --color-surface-hover: #eef1f4;
+  --color-border: #d0d7de;
+  --color-text: #1f2328;
+  --color-text-muted: #59636e;
+  --color-accent: #1a7f37;
+  --color-accent-soft: rgba(26, 127, 55, 0.12);
+  --color-danger: #d1242f;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: $font-stack;
+  background: $color-bg;
+  color: $color-text;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.2s, color 0.2s;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
