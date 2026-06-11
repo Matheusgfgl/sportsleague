@@ -32,6 +32,7 @@ src/
   - The leagues list is fetched once per session (guarded by a `leaguesLoaded` flag), so re-renders/filter changes never re-hit the API.
   - Badges are cached per `idLeague` in a reactive map. Successful results **and** "no badge available" results are cached and never re-fetched; only `error` entries can be retried by clicking again. This satisfies the "responses should be cached to avoid repeat calls" requirement without an extra library.
   - Both caches are **persisted to `sessionStorage`** and hydrated on store creation, so the cache also survives page reloads. `sessionStorage` (not `localStorage`) was chosen deliberately: league data changes over time, so a tab-scoped lifetime is a reasonable implicit TTL.
+  - Persistence is hand-rolled (~25 lines) instead of `pinia-plugin-persistedstate` on purpose: the rules are value-based, not key-based — only *settled* badge entries (`loaded`/`empty`) are saved, never `loading`/`error` snapshots, and filters are excluded because the URL is their source of truth. The plugin would need a custom serializer + `afterHydrate` hook to express the same, hiding the cache logic this assignment asks for behind config. In a production app with simpler rules, the plugin would be the idiomatic choice.
 - **Debounced search:** the input updates immediately, but filtering runs on a 250ms-debounced copy of the query (generic `useDebounce` composable), avoiding wasted re-filters of a potentially ~1000-item list on every keystroke.
 - **Filters in the URL:** `?q=...&sport=...` are read on store init and written back via `history.replaceState`, so filtered views are shareable and survive refresh — without pulling in vue-router for a single-view app.
 - **Badge selection:** the API returns all seasons; the card shows the **first season that actually has a badge** (some entries return seasons with `strBadge: null`), along with the season label.
@@ -48,12 +49,6 @@ src/
 - **Vitest + @vue/test-utils + happy-dom** — 19 tests focused on product logic: filter combinations, debounce timing (fake timers), badge cache guarantees (one fetch per league, negative results cached, retry after error), sessionStorage hydration, and URL sync; plus `LeagueCard` component tests (render fields, click → badge, empty state).
 - **ESLint (flat config: vue recommended + vue/typescript) and Prettier** keep style consistent; `npm run lint` is part of CI.
 - **CI/CD:** GitHub Actions runs lint + tests + build on every push to `main` and deploys the bundle to GitHub Pages.
-
-## Possible Next Steps
-
-- List virtualization (`vue-virtual-scroller`) if the full ~1000-league dataset returns — with the current reduced API response it would be premature.
-- Cache TTL/stale-while-revalidate strategy if data freshness mattered more.
-- E2E smoke test (Playwright) for the happy path.
 
 ## Caveats Observed
 
