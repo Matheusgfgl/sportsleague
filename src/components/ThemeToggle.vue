@@ -35,7 +35,9 @@ const nextTheme = computed(() => (theme.value === 'dark' ? 'light' : 'dark'))
   border-radius: $radius;
   font-size: 1.1rem;
   cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
 
   &:hover {
     background: $color-surface-hover;

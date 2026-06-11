@@ -8,9 +8,7 @@ const STORAGE_KEY = 'sportsleague-theme'
 const initialTheme = (): Theme => {
   const stored = localStorage.getItem(STORAGE_KEY)
   if (stored === 'dark' || stored === 'light') return stored
-  return window.matchMedia('(prefers-color-scheme: light)').matches
-    ? 'light'
-    : 'dark'
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
 }
 
 export const useThemeStore = defineStore('theme', () => {

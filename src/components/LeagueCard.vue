@@ -19,12 +19,17 @@
     </p>
 
     <div v-if="expanded" class="league-card__badge">
-      <p v-if="!badge || badge.status === 'loading'" class="league-card__badge-status">
-        Loading badge...
-      </p>
+      <span
+        v-if="!badge || badge.status === 'loading'"
+        class="league-card__badge-skeleton"
+        role="status"
+        aria-label="Loading badge"
+      ></span>
       <template v-else-if="badge.status === 'loaded' && badge.url">
         <img :src="badge.url" :alt="`${league.strLeague} season badge`" loading="lazy" />
-        <span v-if="badge.season" class="league-card__season">Season {{ badge.season }}</span>
+        <span v-if="badge.season" class="league-card__season"
+          >Season {{ badge.season }}</span
+        >
       </template>
       <p v-else-if="badge.status === 'empty'" class="league-card__badge-status">
         No badge available for this league.
@@ -70,7 +75,10 @@ const toggle = () => {
   border: 1px solid $color-border;
   border-radius: $radius;
   cursor: pointer;
-  transition: border-color 0.15s, background 0.15s, transform 0.15s;
+  transition:
+    border-color 0.15s,
+    background 0.15s,
+    transform 0.15s;
 
   &:hover {
     background: $color-surface-hover;
@@ -133,6 +141,13 @@ const toggle = () => {
       max-height: 120px;
       object-fit: contain;
     }
+  }
+
+  &__badge-skeleton {
+    @include shimmer;
+    width: 120px;
+    height: 120px;
+    border-radius: $radius;
   }
 
   &__season {

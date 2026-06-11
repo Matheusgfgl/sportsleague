@@ -28,6 +28,15 @@
   --color-danger: #d1242f;
 }
 
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 *,
 *::before,
 *::after {
@@ -40,7 +49,9 @@ body {
   background: $color-bg;
   color: $color-text;
   -webkit-font-smoothing: antialiased;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
 }
 
 #app {

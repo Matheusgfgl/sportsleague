@@ -14,7 +14,9 @@
     </div>
 
     <main class="app__content">
-      <p v-if="loading" class="app__status">Loading leagues...</p>
+      <div v-if="loading" class="app__skeletons" role="status" aria-label="Loading leagues">
+        <SkeletonCard v-for="n in 8" :key="n" />
+      </div>
       <div v-else-if="error" class="app__status app__status--error">
         <p>{{ error }}</p>
         <button @click="store.loadLeagues()">Retry</button>
@@ -37,6 +39,7 @@ import SearchBar from '@/components/SearchBar.vue'
 import SportFilter from '@/components/SportFilter.vue'
 import LeagueList from '@/components/LeagueList.vue'
 import ThemeToggle from '@/components/ThemeToggle.vue'
+import SkeletonCard from '@/components/SkeletonCard.vue'
 
 const store = useLeaguesStore()
 const { loading, error, searchQuery, selectedSport, sports, filteredLeagues } =
@@ -83,6 +86,12 @@ onMounted(() => {
     @media (max-width: $breakpoint-sm) {
       flex-direction: column;
     }
+  }
+
+  &__skeletons {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
   }
 
   &__count {
